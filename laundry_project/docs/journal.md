@@ -7,3 +7,7 @@
 # Tuesday 28th of July
 ### What I did today?
 ### Continued working on the homepage wireframe on figma: Finished the why choose us section
+
+# Wednesday 29th of July
+### What I did today?
+### Continued working on the homepage wireframe on figma: Finished the sections' left: Our services, how it works, visit our store, our offers and the footer.
