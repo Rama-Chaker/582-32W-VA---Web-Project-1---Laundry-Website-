@@ -11,3 +11,7 @@
 # Wednesday 29th of July
 ### What I did today?
 ### Continued working on the homepage wireframe on figma: Finished the sections' left: Our services, how it works, visit our store, our offers and the footer.
+
+# Thursday 30th of July
+### What I did today?
+### Started working on the Book Pickup wireframe on figma: it has 3 steps ; Finished the 1st main step of it and started in the 2nd step(didn't finished it yet).
