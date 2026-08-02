@@ -15,3 +15,8 @@
 # Thursday 30th of July
 ### What I did today?
 ### Started working on the Book Pickup wireframe on figma: it has 3 steps ; Finished the 1st main step of it and started in the 2nd step(didn't finished it yet).
+
+# Sunday 2nd of August
+### What I did today?
+### Finished working on the Book Pickup wireframe on figma: it has 3 steps(1 alreadyd one) , so I finished the remaining 2 steps
+### Started working on the admin page
