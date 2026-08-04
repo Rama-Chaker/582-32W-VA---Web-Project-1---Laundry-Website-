@@ -65,3 +65,13 @@
 
 ### What is blocking me?
 - No major blockers at the moment.
+
+# Tuesday 4th of August
+### What I did today?
+- Finished the Admin's wireframe of the Admin's page in Figma: it contains: Dashboard, Expenses and Finance , Customers, Orders tabs/
+
+### What am working next?
+- I am starting the coding phase atm: Am doing the backend part
+
+### What is blocking me?
+- No major blockers at the moment.
