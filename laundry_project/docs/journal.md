@@ -75,3 +75,13 @@
 
 ### What is blocking me?
 - No major blockers at the moment.
+
+# Wednesday 5th of August
+### What I did today?
+- Worked on the backend : did the models, and init files
+
+### What am working next?
+- I am starting with the routes
+
+### What is blocking me?
+- No major blockers at the moment.
