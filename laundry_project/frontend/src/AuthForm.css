@@ -1,0 +1,110 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 20px;
+}
+
+.auth-card {
+  background-color: var(--color-white);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(74, 46, 122, 0.08);
+  padding: 32px;
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid var(--color-primary-accent);
+}
+
+.auth-title {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.auth-subtitle {
+  color: var(--color-slate);
+  font-size: 0.95rem;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: var(--color-text-dark);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(74, 46, 122, 0.15);
+}
+
+.error-banner {
+  background-color: #FEE2E2;
+  color: #991B1B;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  margin-bottom: 16px;
+}
+
+.error-banner ul {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 8px;
+}
+
+.btn-primary:hover {
+  background-color: #38225C;
+}
+
+.toggle-text {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: var(--color-slate);
+}
+
+.toggle-link {
+  color: var(--color-primary);
+  font-weight: 600;
+  cursor: pointer;
+  background: none;
+  border: none;
+  text-decoration: underline;
+  padding: 0 4px;
+}
