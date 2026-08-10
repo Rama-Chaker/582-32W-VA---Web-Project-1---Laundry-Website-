@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap');
+
+:root {
+  --color-primary: #4A2E7A;
+  --color-primary-accent: #DFD4FF;
+  --color-bg-light: #EBF3FE;
+  --color-slate: #64748B;
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+  --color-text-dark: #1E293B;
+
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg-light);
+  color: var(--color-text-dark);
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-primary);
+}
+
+/* Common top navigation bar for switching views */
+.nav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-primary-accent);
+}
+
+.nav-brand {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.nav-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--color-primary);
+  background: transparent;
+  color: var(--color-primary);
+  transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+  background-color: var(--color-primary-accent);
+}
+
+.nav-btn-fill {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.nav-btn-fill:hover {
+  background-color: #38225C;
+}
+
+.user-badge {
+  font-size: 0.9rem;
+  color: var(--color-slate);
+  margin-right: 8px;
+}
