@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Home.css';
+import './css/Home.css';
 import logoImg from './assets/violettaLaundryLogo.jpeg';
 import foldedTowelsImg from './assets/violettafoldedTowels.jpeg';
 import BookingModal from './BookingModal';
