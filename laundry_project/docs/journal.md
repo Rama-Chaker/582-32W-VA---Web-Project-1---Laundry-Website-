@@ -85,3 +85,27 @@
 
 ### What is blocking me?
 - No major blockers at the moment.
+
+# Thursday 6th of August
+### What I did today?
+- Worked on the frontend : Did the homepage UI 
+- Tested the backend
+- Worked on the Book Pickup Model and connected it to the backend
+
+### What am working next?
+- Defining new missing API routes
+
+### What is blocking me?
+- No major blockers at the moment.
+
+# Monday 10th of August
+### What I did today?
+- Fixed the Book Pickup Modal (made the pickup & delivery option disabled, because for this project it is out of my scope)
+- Modified the models.py: Added Items(in order to render the items we offer : e.g wahsing pants... dynamically from the DB) and Order_Items tables (many order has many items)
+- Worked on the Admin UI: Dashboard; did the backend of it, the UI and connected it to the Backend
+
+### What am working next?
+- Admin UI : Orders' UI
+
+### What is blocking me?
+- No major blockers at the moment.
