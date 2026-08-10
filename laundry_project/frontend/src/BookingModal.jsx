@@ -1,38 +1,35 @@
-import React, { useState } from 'react';
-import './BookingModal.css';
-
-const CATALOG_ITEMS = [
-  { id: 'tshirt', name: 'T-Shirt / Long Sleeves / Polo', price: 2.99, icon: '👕', category: 'Everyday Wash' },
-  { id: 'blouse', name: 'Blouse', price: 4.99, icon: '👔', category: 'Everyday Wash' },
-  { id: 'suit', name: 'Suit / Dress', price: 7.99, icon: '🧥', category: 'Dry Cleaning' },
-  { id: 'jeans', name: 'Jeans', price: 3.99, icon: '👖', category: 'Everyday Wash' },
-  { id: 'jacket', name: 'Jacket / Skirt', price: 4.99, icon: '👗', category: 'Dry Cleaning' },
-  { id: 'coat', name: 'Coat', price: 4.99, icon: '🧥', category: 'Dry Cleaning' },
-  { id: 'carpet', name: 'Carpets (/m²)', price: 4.99, icon: '🖼️', category: 'Dry Cleaning' },
-  { id: 'bedding', name: 'Duvet / Blanket / Bed Sheet', price: 4.99, icon: '🛌', category: 'Everyday Wash' },
-  { id: 'towel', name: 'Towel / Pillow Case', price: 0.99, icon: '🏠', category: 'Everyday Wash' }
-];
+import React, { useState, useEffect } from 'react';
+import './css/BookingModal.css';
 
 export default function BookingModal({ isOpen, onClose, currentUser }) {
   const [step, setStep] = useState(1);
+  const [catalogItems, setCatalogItems] = useState([]);
 
-  // Step 1 Form State
-  const [serviceType, setServiceType] = useState('Home Pickup & Delivery'); // or 'In-Store Drop-Off'
+  // Form states
+  const [serviceType, setServiceType] = useState('In-Store Drop-Off');
   const [pickupDate, setPickupDate] = useState('');
   const [pickupTime, setPickupTime] = useState('');
   const [pickupAddress, setPickupAddress] = useState('');
-
-  // Step 2 Form State
   const [activeCategory, setActiveCategory] = useState('All Items');
-  const [selectedItems, setSelectedItems] = useState({}); // e.g. { tshirt: 1, jeans: 2 }
-
-  // Step 3 Form State
+  const [selectedItems, setSelectedItems] = useState({});
   const [instructions, setInstructions] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    if (isOpen) {
+      fetch('http://127.0.0.1:5000/api/items')
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data)) {
+            setCatalogItems(data);
+          }
+        })
+        .catch(err => console.error('Error fetching choices:', err));
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
-  // Quantity Handler
   const updateQuantity = (itemId, delta) => {
     setSelectedItems(prev => {
       const current = prev[itemId] || 0;
@@ -46,30 +43,35 @@ export default function BookingModal({ isOpen, onClose, currentUser }) {
     });
   };
 
-  // Price Calculations
   const deliveryFee = serviceType === 'Home Pickup & Delivery' ? 2.00 : 0.00;
+  
   const itemsSubtotal = Object.entries(selectedItems).reduce((sum, [itemId, qty]) => {
-    const item = CATALOG_ITEMS.find(i => i.id === itemId);
+    const item = catalogItems.find(i => i.id === parseInt(itemId) || i.id === itemId);
     return sum + (item ? item.price * qty : 0);
   }, 0);
+
   const totalAmount = itemsSubtotal + deliveryFee;
 
-  // Filter items by category
   const filteredCatalog = activeCategory === 'All Items'
-    ? CATALOG_ITEMS
-    : CATALOG_ITEMS.filter(item => item.category === activeCategory);
+    ? catalogItems
+    : catalogItems.filter(item => item.category === activeCategory);
 
-  // Submit Order to Backend
   const handleConfirmBooking = async () => {
+    if (!currentUser) {
+      alert('Please log in first to confirm your booking.');
+      return;
+    }
+
     setIsSubmitting(true);
+    
     const payload = {
-      user_id: currentUser ? currentUser.id : null,
-      pricing: totalAmount,
+      user_id: currentUser.id,
+      service_type: serviceType,
       date: pickupDate,
       time: pickupTime,
-      service_type: serviceType,
       address: pickupAddress,
       instructions: instructions,
+      total_price: totalAmount,
       items: selectedItems
     };
 
@@ -81,16 +83,16 @@ export default function BookingModal({ isOpen, onClose, currentUser }) {
       });
 
       if (response.ok) {
-        alert('🎉 Booking confirmed successfully!');
+        alert('Booking submitted successfully!');
         onClose();
         setStep(1);
+        setSelectedItems({});
       } else {
-        alert('Order created locally! (Ensure POST /api/orders endpoint is running)');
-        onClose();
+        const errData = await response.json();
+        alert(errData.message || 'Failed to submit order.');
       }
     } catch (err) {
-      alert('Order created! (Offline/Dev mode)');
-      onClose();
+      alert('Network error. Make sure your Python Flask backend is running.');
     } finally {
       setIsSubmitting(false);
     }
@@ -99,7 +101,6 @@ export default function BookingModal({ isOpen, onClose, currentUser }) {
   return (
     <div className="modal-overlay">
       <div className="booking-modal-card">
-        {/* Modal Header */}
         <div className="modal-header">
           <div>
             <h2>Schedule Pickup / Drop off</h2>
@@ -108,24 +109,18 @@ export default function BookingModal({ isOpen, onClose, currentUser }) {
           <button className="close-btn" onClick={onClose}>✕</button>
         </div>
 
-        {/* --- STEP 1: Service Type, Date, Time, Address --- */}
         {step === 1 && (
           <div className="step-body">
             <div className="service-options">
               <div 
-                className={`service-radio-card ${serviceType === 'Home Pickup & Delivery' ? 'selected' : ''}`}
-                onClick={() => setServiceType('Home Pickup & Delivery')}
+                className="service-radio-card disabled"
+                style={{ opacity: 0.5, cursor: 'not-allowed', position: 'relative' }}
               >
                 <div className="icon-badge">🚗</div>
                 <div className="card-info">
                   <strong>Home Pickup & Delivery</strong>
                   <p>We pick up and return items to your door</p>
                 </div>
-                <input 
-                  type="radio" 
-                  checked={serviceType === 'Home Pickup & Delivery'} 
-                  readOnly 
-                />
               </div>
 
               <div 
@@ -137,11 +132,6 @@ export default function BookingModal({ isOpen, onClose, currentUser }) {
                   <strong>In-Store Drop-Off</strong>
                   <p>Bring items directly to our store.</p>
                 </div>
-                <input 
-                  type="radio" 
-                  checked={serviceType === 'In-Store Drop-Off'} 
-                  readOnly 
-                />
               </div>
             </div>
 
@@ -151,7 +141,6 @@ export default function BookingModal({ isOpen, onClose, currentUser }) {
                 type="date" 
                 value={pickupDate} 
                 onChange={(e) => setPickupDate(e.target.value)} 
-                required 
               />
             </div>
 
@@ -161,25 +150,25 @@ export default function BookingModal({ isOpen, onClose, currentUser }) {
                 type="time" 
                 value={pickupTime} 
                 onChange={(e) => setPickupTime(e.target.value)} 
-                required 
               />
             </div>
 
-            <div className="form-group">
-              <label>Pickup Address</label>
-              <input 
-                type="text" 
-                placeholder="Building, Street, Area" 
-                value={pickupAddress} 
-                onChange={(e) => setPickupAddress(e.target.value)}
-                required={serviceType === 'Home Pickup & Delivery'}
-              />
-            </div>
+            {serviceType === 'Home Pickup & Delivery' && (
+              <div className="form-group">
+                <label>Pickup Address</label>
+                <input 
+                  type="text" 
+                  placeholder="Building, Street, Area" 
+                  value={pickupAddress} 
+                  onChange={(e) => setPickupAddress(e.target.value)}
+                />
+              </div>
+            )}
 
             <div className="modal-footer">
               <button 
                 className="btn-primary-modal" 
-                disabled={!pickupDate || !pickupTime}
+                disabled={!pickupDate || !pickupTime || (serviceType === 'Home Pickup & Delivery' && !pickupAddress)}
                 onClick={() => setStep(2)}
               >
                 Continue To Step 2 →
@@ -188,10 +177,8 @@ export default function BookingModal({ isOpen, onClose, currentUser }) {
           </div>
         )}
 
-        {/* --- STEP 2: Item Catalog Selection --- */}
         {step === 2 && (
           <div className="step-body">
-            {/* Category Filter Pills */}
             <div className="category-pills">
               {['All Items', 'Everyday Wash', 'Dry Cleaning'].map(cat => (
                 <button
@@ -204,7 +191,6 @@ export default function BookingModal({ isOpen, onClose, currentUser }) {
               ))}
             </div>
 
-            {/* Items Grid */}
             <div className="catalog-grid">
               {filteredCatalog.map(item => {
                 const qty = selectedItems[item.id] || 0;
@@ -212,11 +198,10 @@ export default function BookingModal({ isOpen, onClose, currentUser }) {
                   <div key={item.id} className="item-row-card">
                     <div className="item-details">
                       <span className="item-name">{item.name}</span>
-                      <span className="item-price">{item.price.toFixed(2)}$</span>
+                      <span className="item-price">${item.price.toFixed(2)}</span>
                     </div>
 
                     <div className="item-action">
-                      <span className="item-icon-small">{item.icon}</span>
                       {qty === 0 ? (
                         <button className="add-btn" onClick={() => updateQuantity(item.id, 1)}>+</button>
                       ) : (
@@ -247,27 +232,26 @@ export default function BookingModal({ isOpen, onClose, currentUser }) {
           </div>
         )}
 
-        {/* --- STEP 3: Summary & Order Confirmation --- */}
         {step === 3 && (
           <div className="step-body">
             <div className="summary-box">
               <div className="summary-row">
-                <span>Service Selected</span>
+                <span>Service Selected:</span>
                 <strong>{serviceType}</strong>
               </div>
               <div className="summary-row">
-                <span>Scheduled Date & Time</span>
+                <span>Scheduled Date & Time:</span>
                 <strong>{pickupDate} at {pickupTime}</strong>
               </div>
               <div className="summary-row">
-                <span>Address</span>
+                <span>Address:</span>
                 <strong>{pickupAddress || 'In-Store Drop-off'}</strong>
               </div>
-              <div className="summary-row instructions-row">
+              <div className="instructions-row">
                 <label>Special Instructions (Optional)</label>
                 <input 
                   type="text" 
-                  placeholder="Leave it at the front door" 
+                  placeholder="e.g. Leave with security" 
                   value={instructions}
                   onChange={(e) => setInstructions(e.target.value)}
                 />
@@ -275,16 +259,15 @@ export default function BookingModal({ isOpen, onClose, currentUser }) {
 
               <hr className="divider" />
 
-              {/* Selected Items Line Breakdown */}
               <div className="receipt-items">
                 {Object.entries(selectedItems).map(([itemId, qty]) => {
-                  const item = CATALOG_ITEMS.find(i => i.id === itemId);
+                  const item = catalogItems.find(i => i.id === parseInt(itemId) || i.id === itemId);
                   if (!item) return null;
                   return (
                     <div key={itemId} className="receipt-line">
                       <span>{item.name}</span>
-                      <span className="qty-badge">x{qty}</span>
-                      <span className="price-badge">{(item.price * qty).toFixed(2)}$</span>
+                      <span>x{qty}</span>
+                      <span>${(item.price * qty).toFixed(2)}</span>
                     </div>
                   );
                 })}
@@ -293,7 +276,7 @@ export default function BookingModal({ isOpen, onClose, currentUser }) {
                   <div className="receipt-line">
                     <span>Delivery Fee</span>
                     <span></span>
-                    <span className="price-badge">{deliveryFee.toFixed(2)}$</span>
+                    <span>${deliveryFee.toFixed(2)}</span>
                   </div>
                 )}
               </div>
@@ -302,7 +285,7 @@ export default function BookingModal({ isOpen, onClose, currentUser }) {
 
               <div className="total-row">
                 <span>Total Amount</span>
-                <strong className="total-price">{totalAmount.toFixed(2)}$</strong>
+                <strong>${totalAmount.toFixed(2)}</strong>
               </div>
             </div>
 
