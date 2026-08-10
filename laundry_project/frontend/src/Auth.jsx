@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './AuthForm.css';
+import './css/AuthForm.css';
 
 export default function Auth({ onLoginSuccess }) {
   const [isRegistering, setIsRegistering] = useState(false);
