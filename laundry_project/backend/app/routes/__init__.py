@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import app, request, jsonify
 from app import db
 from app.models import *
 
@@ -219,3 +219,186 @@ def init_routes(app):
             ),
             200,
         )
+
+# Get All Orders for Admin Orders Management Tab
+    @app.route("/api/admin/orders", methods=["GET"])
+    def get_admin_orders():
+        all_orders = Order.query.order_by(Order.id.desc()).all()
+        orders_list = []
+
+        for order in all_orders:
+            order_data = order.to_dict()
+
+            # Get Customer Username
+            if order.customer:
+                order_data["customer_name"] = order.customer.username
+            else:
+                order_data["customer_name"] = "Customer"
+
+            # Fulfillment Type
+            order_data["fulfillment_type"] = "In-Store Drop-Off"
+
+            # Get Detailed Item List for Modal
+            item_details = []
+            if order.items:
+                for item in order.items:
+                    item_details.append({
+                        "name": item.item_name,
+                        "quantity": item.quantity,
+                        "unit_price": item.unit_price
+                    })
+            order_data["items_detail"] = item_details
+
+            # Service Summary string for table
+            if len(item_details) > 0:
+                first_item_name = item_details[0]["name"]
+                if len(item_details) == 1:
+                    order_data["service_summary"] = first_item_name
+                else:
+                    extra_count = len(item_details) - 1
+                    order_data["service_summary"] = first_item_name + " (+" + str(extra_count) + " more)"
+            else:
+                order_data["service_summary"] = "General Wash"
+
+            orders_list.append(order_data)
+
+        return jsonify(orders_list), 200
+    
+   # Get All Expenses for Admin
+    @app.route("/api/admin/expenses", methods=["GET"])
+    def get_admin_expenses():
+        try:
+            all_expenses = Expense.query.all()
+            expenses_list = []
+            for expense in all_expenses:
+                expenses_list.append(expense.to_dict())
+            return jsonify(expenses_list), 200
+        except Exception as e:
+            print("Error in get_admin_expenses:", e)
+            return jsonify({"error": str(e)}), 500
+
+    # Add New Expense
+    @app.route("/api/admin/expenses", methods=["POST"])
+    def add_admin_expense():
+        data = request.get_json()
+        if not data:
+            data = {}
+
+        title = data.get("title", "").strip()
+        category = data.get("category", "").strip()
+        amount = data.get("amount", 0.0)
+        date = data.get("date", "")
+        user_id = data.get("user_id", 1)  # Default admin user ID
+
+        if not title or not category or amount <= 0:
+            return jsonify({"message": "Please fill in all expense details."}), 400
+
+        new_expense = Expense(
+            title=title,
+            category=category,
+            amount=float(amount),
+            date=date,
+            user_id=user_id
+        )
+
+        db.session.add(new_expense)
+        db.session.commit()
+
+        return jsonify({
+            "message": "Expense logged successfully!",
+            "expense": new_expense.to_dict()
+        }), 201
+
+    # Update Existing Expense (PUT)
+    @app.route("/api/admin/expenses/<int:expense_id>", methods=["PUT"])
+    def update_admin_expense(expense_id):
+        try:
+            target_expense = Expense.query.get(expense_id)
+            if not target_expense:
+                return jsonify({"message": "Expense not found"}), 404
+
+            data = request.get_json()
+            if not data:
+                data = {}
+
+            title = data.get("title", "").strip()
+            category = data.get("category", "").strip()
+            amount = data.get("amount", 0.0)
+            date = data.get("date", "")
+
+            if title:
+                target_expense.title = title
+            if category:
+                target_expense.category = category
+            if amount > 0:
+                target_expense.amount = float(amount)
+            if date:
+                target_expense.date = date
+
+            db.session.commit()
+
+            return jsonify({
+                "message": "Expense updated successfully!",
+                "expense": target_expense.to_dict()
+            }), 200
+
+        except Exception as e:
+            print("Error updating expense:", e)
+            return jsonify({"error": str(e)}), 500
+        # Get Customers Directory for Admin
+    @app.route("/api/admin/customers", methods=["GET"])
+    def get_admin_customers():
+        try:
+            # Query all registered users with Client role
+            clients = User.query.filter_by(role="Client").all()
+            customers_list = []
+
+            for client in clients:
+                # Calculate total orders and total spending for each customer
+                client_orders = Order.query.filter_by(user_id=client.id).all()
+                total_orders_count = len(client_orders)
+                
+                total_spent = 0.0
+                for order in client_orders:
+                    if order.pricing:
+                        total_spent = total_spent + order.pricing
+
+                customers_list.append({
+                    "id": client.id,
+                    "username": client.username,
+                    "email": client.email,
+                    "phone": getattr(client, "phone", "N/A") or "N/A",
+                    "total_orders": total_orders_count,
+                    "total_spent": round(total_spent, 2)
+                })
+
+            return jsonify(customers_list), 200
+
+        except Exception as e:
+            print("Error fetching customers directory:", e)
+            return jsonify({"error": str(e)}), 500
+        all_orders = Order.query.order_by(Order.id.desc()).all()
+        orders_list = []
+
+        for order in all_orders:
+            order_data = order.to_dict()
+            
+            # Find customer name if user exists
+            if order.customer:
+                order_data["customer_name"] = order.customer.username
+            else:
+                order_data["customer_name"] = "Customer"
+
+            # Derive service summary (e.g., Dry Cleaning, Wash, etc.)
+            if order.items and len(order.items) > 0:
+                first_item = order.items[0]
+                if len(order.items) == 1:
+                    order_data["service_summary"] = first_item.item_name
+                else:
+                    order_data["service_summary"] = first_item.item_name + f" (+{len(order.items) - 1} more)"
+            else:
+                order_data["service_summary"] = "General Wash"
+
+            orders_list.append(order_data)
+
+        return jsonify(orders_list), 200
