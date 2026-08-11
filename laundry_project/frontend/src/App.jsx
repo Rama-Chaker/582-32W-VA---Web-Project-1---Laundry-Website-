@@ -1,50 +1,53 @@
 import React, { useState } from 'react';
 import Home from './Home';
-import Auth from './Auth';
+import Services from './Services';
 import AdminDashboard from './AdminDashboard';
+import Auth from './Auth';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState('home'); // 'home', 'auth', 'admin'
+  const [currentPage, setCurrentPage] = useState('home');
   const [currentUser, setCurrentUser] = useState(null);
 
-  const handleLoginSuccess = (user) => {
-    setCurrentUser(user);
-    if (user.role === 'Admin') {
-      setCurrentView('admin');
-    } else {
-      setCurrentView('home');
-    }
-  };
+  // Function to navigate between pages
+  function handleNavigate(page) {
+  setCurrentPage(page);
+  // Clear any hash (#services, #home, etc.) from the URL bar
+  window.history.pushState('', document.title, window.location.pathname);
+  window.scrollTo(0, 0);
+}
 
-  const handleLogout = () => {
+  function handleLogout() {
     setCurrentUser(null);
-    setCurrentView('home');
-  };
-
-  if (currentView === 'auth') {
-    return (
-      <Auth 
-        onLoginSuccess={handleLoginSuccess}
-        onNavigateHome={() => setCurrentView('home')}
-      />
-    );
-  }
-
-  if (currentView === 'admin' || (currentUser && currentUser.role === 'Admin')) {
-    return (
-      <AdminDashboard 
-        currentUser={currentUser}
-        onLogout={handleLogout}
-        onNavigateHome={() => setCurrentView('home')}
-      />
-    );
+    setCurrentPage('home');
   }
 
   return (
-    <Home 
-      onNavigateToAuth={() => setCurrentView('auth')}
-      currentUser={currentUser}
-      onLogout={handleLogout}
-    />
+    <div className="app-container">
+      {currentPage === 'home' && (
+        <Home 
+          onNavigateToServices={() => handleNavigate('services')}
+          onNavigateToAuth={() => handleNavigate('auth')}
+          currentUser={currentUser}
+          onLogout={handleLogout}
+        />
+      )}
+
+      {currentPage === 'services' && (
+        <Services 
+          onNavigateHome={() => handleNavigate('home')}
+          onNavigateToAuth={() => handleNavigate('auth')}
+          currentUser={currentUser}
+          onLogout={handleLogout}
+        />
+      )}
+
+      {currentPage === 'admin' && (
+        <AdminDashboard 
+          currentUser={currentUser}
+          onLogout={handleLogout}
+          onNavigateHome={() => handleNavigate('home')}
+        />
+      )}
+    </div>
   );
 }
