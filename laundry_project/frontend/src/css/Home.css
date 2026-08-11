@@ -66,6 +66,13 @@
   gap: 16px;
 }
 
+.active-link {
+  color: #3b2b68 !important;
+  font-weight: 700 !important;
+  border-bottom: 2px solid #3b2b68;
+  padding-bottom: 4px;
+}
+
 /* --- HERO --- */
 .hero-section {
   background-color: var(--bg-light-blue);
@@ -460,4 +467,11 @@ section {
   .footer-container {
     grid-template-columns: 1fr;
   }
+}
+
+.inline-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 6px;
+  color: #3b2b68;
 }
