@@ -5,9 +5,15 @@
 **Violetta Laundry** is a full-stack web application designed for a local laundry and dry-cleaning service based in Jdeideh, Lebanon. The platform serves both **individual customers** and **commercial clients (hotels, businesses)**, providing a seamless interface to browse services, claim special offers, arrange pickup/delivery orders, and manage account workflows.
 
 ---
+
 ## Out Of Scope Feature:
-The Pickup/delivery option is out of scope for this project.
-The Drop off option is only the available feature for this project 
+
+- The Pickup/delivery option is out of scope for this project: The Drop off option is only the available feature for this project
+
+-Adding new Item (e.g winter coat...)
+
+-WhatsApp Texting
+
 ## Design System & Palette
 
 - **Primary Color:** `#4A2E7A` / `#3B2874` (Deep Royal Purple)
@@ -59,21 +65,26 @@ The SQLite relational database (powered by Flask-SQLAlchemy) uses the following 
 - **`Choice`** (`choices`): Fulfillment options (Pickup / Delivery).
 
 ![DB Models using Draw.io](DBimage.png)  
-🔗 [View Diagram on Draw.io](https://app.diagrams.net/#G1q-r-sBsWdqj5x6SQ1kHEJGP8ZUOEzxxD#%7B%22pageId%22%3A%22wHHchIQuiM4AkLc_jLid%22%7D)
+[View Diagram on Draw.io](https://app.diagrams.net/#G1q-r-sBsWdqj5x6SQ1kHEJGP8ZUOEzxxD#%7B%22pageId%22%3A%22wHHchIQuiM4AkLc_jLid%22%7D)
 
+[Figma Wireframes](https://www.figma.com/design/I2z3Jqvykpli8NEFXYC5tI/Violetta-Laundry-Website?node-id=0-1&p=f&t=GieSWpAsivh0VMRC-0)
 ---
 
 ## API Endpoints (Flask Backend)
+
 ### Authentication
+
 - `POST /api/register` : Registers a new user account with strict password validation.
 - `POST /api/login` : Authenticates user credentials and returns user details with role (`Client` / `Admin`).
 
 ### Services & Orders
+
 - `GET /api/items` : Fetches catalog items list for the booking modal.
 - `POST /api/orders` : Creates a new customer order and saves selected order items.
 - `PUT /api/orders/<id>/status` : Updates the status of an existing order (`Pending`, `In Wash`, `Completed`, `Cancelled`).
 
 ### Admin Dashboard
+
 - `GET /api/admin/dashboard` : Returns total revenue, total expenses, total order count, and recent orders summary.
 
 ---
