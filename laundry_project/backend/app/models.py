@@ -68,6 +68,16 @@ class Expense(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
     logged_by = db.relationship("User", back_populates="expenses")
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "category": self.category,
+            "amount": self.amount,
+            "date": self.date,
+            "user_id": self.user_id
+        }
+
 
 class Choice(db.Model):
     __tablename__ = "choices"
