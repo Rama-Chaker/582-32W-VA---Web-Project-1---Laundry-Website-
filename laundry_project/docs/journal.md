@@ -1,111 +1,169 @@
 # Monday 27th of July
+
 ### What I did today?
+
 - Created the Trello board and added the necessary tasks.
 - Set up the project.
 - Started the homepage wireframe in Figma and completed the header and hero sections.
 
 ### What am working next?
+
 - Continue developing the homepage wireframe.
 
 ### What is blocking me?
+
 - No major blockers at the moment.
 
 # Tuesday 28th of July
+
 ### What I did today?
+
 - Continued working on the homepage wireframe in Figma.
 - Completed the “Why Choose Us” section.
 
 ### What am working next?
+
 - Move on to the remaining homepage sections.
 
 ### What is blocking me?
+
 - No major blockers at the moment.
 
 # Wednesday 29th of July
+
 ### What I did today?
+
 - Continued working on the homepage wireframe in Figma.
 - Finished the remaining sections: Our Services, How It Works, Visit Our Store, Our Offers, and the footer.
 
 ### What am working next?
+
 - Start working on the Book Pickup wireframe.
 
 ### What is blocking me?
+
 - No major blockers at the moment.
 
 # Thursday 30th of July
+
 ### What I did today?
+
 - Started the Book Pickup wireframe in Figma.
 - Completed the first main step and began the second step.
 
 ### What am working next?
+
 - Finish the second step and continue with the remaining steps of the Book Pickup flow.
 
 ### What is blocking me?
+
 - The work is still in progress, but there are no major blockers.
 
 # Sunday 2nd of August
+
 ### What I did today?
+
 - Finished the Book Pickup wireframe in Figma.
 - Completed the remaining two steps of the three-step process.
 - Started working on the admin page.
 
 ### What am working next?
+
 - Continue developing the admin page.
 
 ### What is blocking me?
+
 - No major blockers at the moment.
 
 # Monday 3rd of August
+
 ### What I did today?
+
 - Finished the Admin Dashboard's tab wireframe of the Admin's page in Figma.
 - Finished the Expenses & finance 's tab wireframe of the Admin's page in figma.
 
 ### What am working next?
+
 - Continue developing the "Add Expense Item" popup , and the remaining 2 tabs of the admin's page.
 
 ### What is blocking me?
+
 - No major blockers at the moment.
 
 # Tuesday 4th of August
+
 ### What I did today?
+
 - Finished the Admin's wireframe of the Admin's page in Figma: it contains: Dashboard, Expenses and Finance , Customers, Orders tabs/
 
 ### What am working next?
+
 - I am starting the coding phase atm: Am doing the backend part
 
 ### What is blocking me?
+
 - No major blockers at the moment.
 
 # Wednesday 5th of August
+
 ### What I did today?
+
 - Worked on the backend : did the models, and init files
 
 ### What am working next?
+
 - I am starting with the routes
 
 ### What is blocking me?
+
 - No major blockers at the moment.
 
 # Thursday 6th of August
+
 ### What I did today?
-- Worked on the frontend : Did the homepage UI 
+
+- Worked on the frontend : Did the homepage UI
 - Tested the backend
 - Worked on the Book Pickup Model and connected it to the backend
 
 ### What am working next?
+
 - Defining new missing API routes
 
 ### What is blocking me?
+
 - No major blockers at the moment.
 
 # Monday 10th of August
+
 ### What I did today?
+
 - Fixed the Book Pickup Modal (made the pickup & delivery option disabled, because for this project it is out of my scope)
 - Modified the models.py: Added Items(in order to render the items we offer : e.g wahsing pants... dynamically from the DB) and Order_Items tables (many order has many items)
 - Worked on the Admin UI: Dashboard; did the backend of it, the UI and connected it to the Backend
 
 ### What am working next?
+
 - Admin UI : Orders' UI
 
 ### What is blocking me?
+
+- No major blockers at the moment.
+
+# Tuesday 11th of August
+
+### What I did today?
+
+- Did the Orders Management's Tab's UI and backend, and connected them to each other
+- Did the Expenses and Finances ' tab with the Add Expense modal, did the backend of it as well, and connected to each other.
+- Did the Customers' Tab and its backend, connected to each other
+- Used lucide-react for the icons and updated all the jsx files that need icons , to use this library
+- Services UI
+
+### What am working next?
+
+- About Us Wireframe and UI
+
+### What is blocking me?
+
 - No major blockers at the moment.
