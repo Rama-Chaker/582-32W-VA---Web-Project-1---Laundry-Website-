@@ -10,28 +10,43 @@ export default function App() {
 
   // Function to navigate between pages
   function handleNavigate(page) {
-  setCurrentPage(page);
-  // Clear any hash (#services, #home, etc.) from the URL bar
-  window.history.pushState('', document.title, window.location.pathname);
-  window.scrollTo(0, 0);
-}
+    setCurrentPage(page);
+    // Clear any hash (#services, #home, etc.) from the URL bar
+    window.history.pushState('', document.title, window.location.pathname);
+    window.scrollTo(0, 0);
+  }
 
   function handleLogout() {
     setCurrentUser(null);
     setCurrentPage('home');
   }
 
+  // Handle successful login
+  function handleLoginSuccess(user) {
+    setCurrentUser(user);
+    
+    // If the logged in user is an admin, go directly to admin dashboard!
+    if (user && user.role === 'admin') {
+      handleNavigate('admin');
+    } else {
+      handleNavigate('home');
+    }
+  }
+
   return (
     <div className="app-container">
+      {/* 1. HOME VIEW */}
       {currentPage === 'home' && (
         <Home 
-          onNavigateToServices={() => handleNavigate('services')}
-          onNavigateToAuth={() => handleNavigate('auth')}
-          currentUser={currentUser}
-          onLogout={handleLogout}
+         currentUser={currentUser}
+          onLogout={() => setCurrentUser(null)}
+          onNavigateToServices={() => setCurrentPage('services')}
+          onNavigateToAuth={() => setCurrentPage('auth')}
+          onNavigateToAdmin={() => setCurrentPage('admin')} 
         />
       )}
 
+      {/* 2. SERVICES VIEW */}
       {currentPage === 'services' && (
         <Services 
           onNavigateHome={() => handleNavigate('home')}
@@ -41,11 +56,20 @@ export default function App() {
         />
       )}
 
+      {/* 3. AUTH (SIGN IN / REGISTER) VIEW - THIS WAS MISSING */}
+      {currentPage === 'auth' && (
+        <Auth 
+          onNavigateHome={() => handleNavigate('home')}
+          onLoginSuccess={handleLoginSuccess}
+        />
+      )}
+
+      {/* 4. ADMIN DASHBOARD VIEW */}
       {currentPage === 'admin' && (
         <AdminDashboard 
           currentUser={currentUser}
           onLogout={handleLogout}
-          onNavigateHome={() => handleNavigate('home')}
+          onNavigateHome={() => setCurrentPage('home')}
         />
       )}
     </div>

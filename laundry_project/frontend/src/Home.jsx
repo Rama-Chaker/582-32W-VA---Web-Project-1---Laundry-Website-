@@ -26,6 +26,7 @@ import {
 export default function Home({
     onNavigateToServices,
     onNavigateToAuth,
+    onNavigateToAdmin,
     currentUser,
     onLogout,
 }) {
@@ -138,8 +139,18 @@ export default function Home({
 
                         <button
                             className="user-icon-btn"
-                            onClick={onNavigateToAuth}
                             title="Account"
+                            onClick={() => {
+                                if (
+                                    currentUser &&
+                                    currentUser.role === "Admin"
+                                ) {
+                                    onNavigateToAdmin();
+                                } else {
+                                    onNavigateToAuth();
+                                }
+                            }}
+                            title={currentUser?.role === 'Admin' ? "Dashboard" : "Account"}
                         >
                             <User size={22} color="currentColor" />
                         </button>
