@@ -24,6 +24,7 @@ export default function Services({
     currentUser,
     onLogout,
     onNavigateHome,
+    onNavigateToAbout,
 }) {
     const [isBookingOpen, setIsBookingOpen] = useState(false);
 
@@ -50,7 +51,7 @@ export default function Services({
                     <nav className="nav-links">
                         <a
                             href="#home"
-                            onClick={function (e) {
+                            onClick={(e) => {
                                 e.preventDefault();
                                 onNavigateHome();
                             }}
@@ -61,7 +62,7 @@ export default function Services({
                         <a
                             href="#services"
                             className="active-link"
-                            onClick={function (e) {
+                            onClick={(e) => {
                                 e.preventDefault();
                             }}
                         >
@@ -70,9 +71,9 @@ export default function Services({
 
                         <a
                             href="#about"
-                            onClick={function (e) {
+                            onClick={(e) => {
                                 e.preventDefault();
-                                onNavigateHome();
+                                onNavigateToAbout();
                             }}
                         >
                             About Us
@@ -80,7 +81,7 @@ export default function Services({
 
                         <a
                             href="#offers"
-                            onClick={function (e) {
+                            onClick={(e) => {
                                 e.preventDefault();
                                 onNavigateHome();
                             }}
@@ -90,7 +91,7 @@ export default function Services({
 
                         <a
                             href="#contact"
-                            onClick={function (e) {
+                            onClick={(e) => {
                                 e.preventDefault();
                                 scrollToContact();
                             }}
@@ -102,7 +103,8 @@ export default function Services({
                     <div className="header-actions">
                         <button
                             className="btn-primary-pill"
-                            onClick={function () {
+                            onClick={(e) => {
+                                e.preventDefault();
                                 setIsBookingOpen(true);
                             }}
                         >
@@ -141,7 +143,7 @@ export default function Services({
                 </div>
             </header>
 
-            {/* --- TOP HERO BANNER (MATCHING FIGMA) --- */}
+            {/* --- TOP HERO BANNER  --- */}
             <section className="services-hero-container">
                 <div className="services-hero-card">
                     <div className="hero-left-text">
@@ -282,7 +284,7 @@ export default function Services({
                                 </a>
                             </li>
                             <li>
-                                <a href="#about" onClick={onNavigateHome}>
+                                <a href="#about" onClick={onNavigateToAbout}>
                                     2. About Us
                                 </a>
                             </li>
