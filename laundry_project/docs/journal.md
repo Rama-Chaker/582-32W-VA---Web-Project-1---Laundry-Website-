@@ -167,3 +167,17 @@
 ### What is blocking me?
 
 - No major blockers at the moment.
+
+# Friday 14th of August
+
+### What I did today?
+
+- Worked on About Us Wireframe and UI
+
+### What am working next?
+
+- Pricing Wireframe and UI
+
+### What is blocking me?
+
+- No major blockers at the moment.
