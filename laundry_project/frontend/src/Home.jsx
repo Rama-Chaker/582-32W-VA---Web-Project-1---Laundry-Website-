@@ -27,6 +27,7 @@ export default function Home({
     onNavigateToServices,
     onNavigateToAuth,
     onNavigateToAdmin,
+    onNavigateToAbout,
     currentUser,
     onLogout,
 }) {
@@ -79,9 +80,9 @@ export default function Home({
 
                         <a
                             href="#about"
-                            onClick={function (e) {
+                            onClick={ (e) => {
                                 e.preventDefault();
-                                scrollToSection("about");
+                                onNavigateToAbout();
                             }}
                         >
                             About Us
@@ -513,7 +514,10 @@ export default function Home({
                             <li>
                                 <a
                                     href="#about"
-                                    onClick={() => scrollToSection("about")}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        onNavigateToAbout();
+                                    }}
                                 >
                                     2. About Us
                                 </a>

@@ -473,5 +473,6 @@ section {
   display: inline-block;
   vertical-align: middle;
   margin-right: 6px;
-  color: #3b2b68;
+  /* color: #3b2b68; */
+  color: var(--white);
 }
