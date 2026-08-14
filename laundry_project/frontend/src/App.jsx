@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Home from './Home';
 import Services from './Services';
 import AdminDashboard from './AdminDashboard';
+import About from './About';
 import Auth from './Auth';
 
 export default function App() {
@@ -41,6 +42,7 @@ export default function App() {
          currentUser={currentUser}
           onLogout={() => setCurrentUser(null)}
           onNavigateToServices={() => setCurrentPage('services')}
+          onNavigateToAbout={() => setCurrentPage('about')}
           onNavigateToAuth={() => setCurrentPage('auth')}
           onNavigateToAdmin={() => setCurrentPage('admin')} 
         />
@@ -51,6 +53,7 @@ export default function App() {
         <Services 
           onNavigateHome={() => handleNavigate('home')}
           onNavigateToAuth={() => handleNavigate('auth')}
+          onNavigateToAbout={() => handleNavigate('about')}
           currentUser={currentUser}
           onLogout={handleLogout}
         />
@@ -70,6 +73,18 @@ export default function App() {
           currentUser={currentUser}
           onLogout={handleLogout}
           onNavigateHome={() => setCurrentPage('home')}
+        />
+      )}
+
+      {/* 5. ABOUT VIEW */}
+      {currentPage === 'about' && (
+        <About 
+          currentUser={currentUser}
+          onNavigate={handleNavigate}
+          onNavigateToAuth={() => handleNavigate('auth')}
+          onNavigateToAdmin={() => handleNavigate('admin')}
+          onNavigateHome={() => handleNavigate('home')}
+          onNavigateToServices={() => handleNavigate('services')}
         />
       )}
     </div>
