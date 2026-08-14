@@ -1,0 +1,184 @@
+/* Overall Page Layout */
+.about-container {
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f9f9fb;
+  min-height: 100vh;
+}
+
+/* ---------------- NAVBAR ---------------- */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.nav-logo {
+  cursor: pointer;
+}
+
+.logo-img {
+  height: 45px;
+}
+
+.active-link {
+  color: #3b2b68 !important;
+  font-weight: 700 !important;
+  border-bottom: 2px solid #3b2b68;
+  padding-bottom: 4px;
+}
+
+
+.nav-link {
+  cursor: pointer;
+  color: #333;
+}
+
+.nav-link.active {
+  font-weight: bold;
+  color: #4c2882;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn-pickup {
+  background-color: #4c2882;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.user-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4c2882;
+}
+
+/* ---------------- HERO / MAIN SECTION ---------------- */
+.about-main {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.section-title-sub {
+  text-align: center;
+  color: #4c2882;
+  font-size: 24px;
+  margin-bottom: 30px;
+}
+
+.hero-card {
+  background-color: #f0f3ff;
+  border-radius: 16px;
+  padding: 30px;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.hero-logo-box {
+  flex: 1;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.hero-logo-box img {
+  max-width: 100%;
+  height: auto;
+}
+
+.hero-content-box {
+  flex: 1.2;
+  background-color: #3b236e;
+  color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.story-text {
+  font-style: italic;
+  line-height: 1.6;
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.btn-services {
+  background-color: #d8cbf7;
+  color: #3b236e;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------------- OUR CORE VALUES ---------------- */
+.values-section {
+  margin-top: 60px;
+}
+
+.section-title {
+  text-align: center;
+  color: #111111;
+  font-size: 26px;
+  margin-bottom: 30px;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.value-card {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.value-icon {
+  margin-bottom: 10px;
+  color: #4c2882;
+}
+
+.value-card h3 {
+  font-size: 18px;
+  color: #111111;
+  margin-bottom: 8px;
+}
+
+.value-card p {
+  color: #666666;
+  font-size: 13px;
+  margin: 0;
+}
