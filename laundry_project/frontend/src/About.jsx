@@ -10,7 +10,7 @@ import {
     MessageSquare,
     Calendar,
     Mail,
-    MessageCircle
+    MessageCircle,
 } from "lucide-react";
 import "./css/About.css";
 import logoImg from "./assets/violettaLaundryLogo.jpeg";
@@ -22,14 +22,15 @@ export default function About({
     onNavigateToAdmin,
     onLogout,
     onNavigateHome,
+    onNavigateToPricing,
     onNavigateToServices,
 }) {
-    const handleNav = (pageName) => {
-        if (onNavigate) {
-            onNavigate(pageName);
+    function scrollToContact() {
+        const contactElement = document.getElementById("contact");
+        if (contactElement) {
+            contactElement.scrollIntoView({ behavior: "smooth" });
         }
-    };
-
+    }
     return (
         <div className="about-container">
             {/* ---------------- NAVBAR ---------------- */}
@@ -37,7 +38,7 @@ export default function About({
                 <div className="header-container">
                     <div className="logo-area" onClick={onNavigateHome}>
                         <img
-                           src={logoImg}
+                            src={logoImg}
                             alt="Violetta Laundry Logo"
                             className="brand-logo"
                         />
@@ -66,7 +67,7 @@ export default function About({
 
                         <a
                             href="#about"
-                           className="active-link"
+                            className="active-link"
                             onClick={(e) => {
                                 e.preventDefault();
                             }}
@@ -78,7 +79,7 @@ export default function About({
                             href="#offers"
                             onClick={(e) => {
                                 e.preventDefault();
-                                onNavigateHome();
+                                onNavigateToPricing();
                             }}
                         >
                             Pricings
@@ -205,14 +206,13 @@ export default function About({
                 </section>
             </main>
 
-           
-             {/* --- FOOTER --- */}
-            <footer className="figma-footer">
+            {/* --- FOOTER --- */}
+            <footer id="contact" className="figma-footer">
                 <div className="footer-container">
                     <div className="footer-col brand-col">
                         <div className="footer-logo">
                             <img
-                               src={logoImg}
+                                src={logoImg}
                                 alt="Violetta Laundry"
                                 className="brand-logo footer-brand-logo"
                             />
@@ -230,7 +230,10 @@ export default function About({
                             <li>
                                 <a
                                     href="#home"
-                                    onClick={() => scrollToSection("home")}
+                                    onClick={(e) => {
+                                e.preventDefault();
+                                onNavigateHome();
+                            }}
                                 >
                                     1. Home
                                 </a>
@@ -258,10 +261,7 @@ export default function About({
                                 </a>
                             </li>
                             <li>
-                                <a
-                                    href="#contact"
-                                    onClick={() => scrollToSection("contact")}
-                                >
+                                <a href="#contact" onClick={scrollToContact}>
                                     4. Contact
                                 </a>
                             </li>
