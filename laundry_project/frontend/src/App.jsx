@@ -4,6 +4,7 @@ import Services from './Services';
 import AdminDashboard from './AdminDashboard';
 import About from './About';
 import Auth from './Auth';
+import Pricing from './Pricing';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -43,6 +44,7 @@ export default function App() {
           onLogout={handleLogout}
           onNavigateToServices={() => setCurrentPage('services')}
           onNavigateToAbout={() => setCurrentPage('about')}
+          onNavigateToPricing={()=> setCurrentPage('pricing')}
           onNavigateToAuth={() => setCurrentPage('auth')}
           onNavigateToAdmin={() => setCurrentPage('admin')} 
         />
@@ -54,6 +56,7 @@ export default function App() {
           onNavigateHome={() => handleNavigate('home')}
           onNavigateToAuth={() => handleNavigate('auth')}
           onNavigateToAbout={() => handleNavigate('about')}
+          onNavigateToPricing={()=> handleNavigate('pricing')}
           currentUser={currentUser}
           onLogout={handleLogout}
         />
@@ -85,8 +88,22 @@ export default function App() {
           onNavigateToAdmin={() => handleNavigate('admin')}
           onNavigateHome={() => handleNavigate('home')}
           onNavigateToServices={() => handleNavigate('services')}
+          onNavigateToPricing={()=> handleNavigate('pricing')}
         />
       )}
+
+      {/*6. Pricing View */}
+      {currentPage === 'pricing' && (
+  <Pricing 
+    currentUser={currentUser}
+    onLogout={handleLogout}
+    onNavigateToHome={() => handleNavigate('home')}
+    onNavigateToServices={() => handleNavigate('services')}
+    onNavigateToAbout={() => handleNavigate('about')}
+    onNavigateToAuth={() => handleNavigate('auth')}
+    onNavigateToAdmin={() => handleNavigate('admin')} 
+  />
+)}
     </div>
   );
 }
