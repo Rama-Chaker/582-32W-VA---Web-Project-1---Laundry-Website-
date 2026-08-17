@@ -181,3 +181,31 @@
 ### What is blocking me?
 
 - No major blockers at the moment.
+
+# Sunday 16th of August
+
+### What I did today?
+
+- Worked on the login issue : Client should be logged in before doing the Book Pickup Process
+
+### What am working next?
+
+- Pricing Wireframe and UI
+
+### What is blocking me?
+
+- No major blockers at the moment.
+
+# Monday 17th of August
+
+### What I did today?
+
+- Worked on Pricing Wireframe and UI
+
+### What am working next?
+
+- Client Wireframe and UI
+
+### What is blocking me?
+
+- No major blockers at the moment.

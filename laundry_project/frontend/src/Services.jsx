@@ -25,6 +25,7 @@ export default function Services({
     onLogout,
     onNavigateHome,
     onNavigateToAbout,
+    onNavigateToPricing,
 }) {
     const [isBookingOpen, setIsBookingOpen] = useState(false);
 
@@ -79,11 +80,11 @@ export default function Services({
                             About Us
                         </a>
 
-                        <a
+                         <a
                             href="#offers"
                             onClick={(e) => {
                                 e.preventDefault();
-                                onNavigateHome();
+                                onNavigateToPricing();
                             }}
                         >
                             Pricings
