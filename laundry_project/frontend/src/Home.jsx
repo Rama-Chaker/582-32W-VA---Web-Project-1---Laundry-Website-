@@ -33,6 +33,15 @@ export default function Home({
 }) {
     const [isBookingOpen, setIsBookingOpen] = useState(false);
 
+    const handleBookPickup = () => {
+        if (!currentUser) {
+            alert("Please log in first to book a pickup.");
+            onNavigateToAuth(); // Redirect to login page
+            return;
+        }
+        setIsBookingOpen(true);
+    };
+
     const scrollToSection = (id) => {
         const element = document.getElementById(id);
         if (element) {
@@ -112,7 +121,7 @@ export default function Home({
                     <div className="header-actions">
                         <button
                             className="btn-primary-pill"
-                            onClick={() => setIsBookingOpen(true)}
+                            onClick={handleBookPickup}
                         >
                             Book Pickup
                         </button>
