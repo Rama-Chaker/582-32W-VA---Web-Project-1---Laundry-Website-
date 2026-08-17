@@ -6,8 +6,8 @@ import About from './About';
 import Auth from './Auth';
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState('home');
   const [currentUser, setCurrentUser] = useState(null);
+  const [currentPage, setCurrentPage] = useState('home');
 
   // Function to navigate between pages
   function handleNavigate(page) {
@@ -40,7 +40,7 @@ export default function App() {
       {currentPage === 'home' && (
         <Home 
          currentUser={currentUser}
-          onLogout={() => setCurrentUser(null)}
+          onLogout={handleLogout}
           onNavigateToServices={() => setCurrentPage('services')}
           onNavigateToAbout={() => setCurrentPage('about')}
           onNavigateToAuth={() => setCurrentPage('auth')}
