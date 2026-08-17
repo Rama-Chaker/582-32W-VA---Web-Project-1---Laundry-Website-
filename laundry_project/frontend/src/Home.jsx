@@ -28,6 +28,7 @@ export default function Home({
     onNavigateToAuth,
     onNavigateToAdmin,
     onNavigateToAbout,
+    onNavigateToPricing,
     currentUser,
     onLogout,
 }) {
@@ -99,9 +100,9 @@ export default function Home({
 
                         <a
                             href="#offers"
-                            onClick={function (e) {
+                            onClick={(e) => {
                                 e.preventDefault();
-                                scrollToSection("offers");
+                                onNavigateToPricing();
                             }}
                         >
                             Pricings
