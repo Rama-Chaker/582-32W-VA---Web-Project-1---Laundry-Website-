@@ -10,9 +10,9 @@
 
 - The Pickup/delivery option is out of scope for this project: The Drop off option is only the available feature for this project
 
--Adding new Item (e.g winter coat...)
+- Adding new Item (e.g winter coat...)
 
--WhatsApp Texting
+- WhatsApp Texting
 
 ## Design System & Palette
 
@@ -47,7 +47,7 @@
 - **Authentication System:** Integrated modal switch for Sign In / Registration with custom role tracking (`customer`, `admin`).
 - **Our Services & Offers:** Showcases Wash & Fold, Dry Cleaning, Ironing, Comforters & Blankets, Curtains, and Commercial Laundry.
 - **Order Management (Pickup & Delivery):** Dedicated workflows for scheduling laundry pickups and home delivery requests.
-- **User Dashboard:** Page reserved for customers to track active order progress, inspect status updates, and review order history.
+- **User Dashboard:** Page reserved for customers to track active order progress, inspect status updates, and review order history. And also to edit its profile.
 - **Admin Management Dashboard:** Overview panel for administrators to manage service choices, track expenses, update order statuses, and oversee laundry operations.
 
 ---
@@ -72,23 +72,34 @@ The SQLite relational database (powered by Flask-SQLAlchemy) uses the following 
 
 ## API Endpoints (Flask Backend)
 
-### Authentication
+### Core & Health Check
+- `GET /` : Health check route returning backend status message.
 
-- `POST /api/register` : Registers a new user account with strict password validation.
-- `POST /api/login` : Authenticates user credentials and returns user details with role (`Client` / `Admin`).
+### Authentication & Client Profile
+- `POST /api/register` : Registers a new user account with validation rules for username (max 50 chars, no spaces) and password (8–20 chars, 1 uppercase letter, 1 number). Defaults role to `Client`.
+- `POST /api/login` : Authenticates user credentials (`username`, `password`) and returns user profile details upon successful login.
+- `GET /api/client/profile/<int:user_id>` : Fetches account profile data (`id`, `username`, `email`, `phone`, `role`) for a given client ID.
+- `PUT /api/client/profile/<int:user_id>` : Updates profile information (`username`, `email`, `phone`) for a customer account.
 
-### Services & Orders
+### Catalog & Choices
+- `GET /api/items` : Fetches all catalog items (`id`, `name`, `price`, `category`) available for booking orders.
+- `GET /api/choices` : Retrieves predefined service choices and categories (`id`, `name`, `price`, `category`).
 
-- `GET /api/items` : Fetches catalog items list for the booking modal.
-- `POST /api/orders` : Creates a new customer order and saves selected order items.
-- `PUT /api/orders/<id>/status` : Updates the status of an existing order (`Pending`, `In Wash`, `Completed`, `Cancelled`).
+### Orders
+- `POST /api/orders` : Creates a new order with `user_id`, `total_price`, drop-off `date`, `time`, and selected items dictionary (mapping catalog item IDs to quantities).
+- `GET /api/client/orders/<int:user_id>` : Retrieves order history (`id`, `date`, `pricing`, `status`) for a specific customer sorted by newest first.
+- `GET /api/orders/<int:order_id>/items` : Fetches individual line items (`id`, `order_id`, `catalog_item_id`, `item_name`, `quantity`, `unit_price`) linked to an order.
+- `PUT /api/orders/<int:order_id>/status` : Updates the processing status (`Pending`, `In Wash`, `Completed`, `Cancelled`) of a specific order.
 
-### Admin Dashboard
-
-- `GET /api/admin/dashboard` : Returns total revenue, total expenses, total order count, and recent orders summary.
+### Admin Dashboard & Management
+- `GET /api/admin/dashboard` : Returns store financial summary metrics (`total_revenue`, `total_expenses`, `total_orders`) alongside a list of the 5 most recent orders.
+- `GET /api/admin/orders` : Retrieves all store orders formatted for administrative tracking, complete with customer names, service summaries, fulfillment types, and line item breakdowns.
+- `GET /api/admin/customers` : Returns directory of registered `Client` users with their phone number, total order count, and total lifetime amount spent.
+- `GET /api/admin/expenses` : Fetches all recorded operational expenses for store financial tracking.
+- `POST /api/admin/expenses` : Logs a new store expense with `title`, `category`, `amount`, `date`, and associated admin `user_id`.
+- `PUT /api/admin/expenses/<int:expense_id>` : Updates an existing expense entry (`title`, `category`, `amount`, `date`).
 
 ---
-
 ## Getting Started
 
 ### 1. Backend Setup (Flask)
