@@ -209,3 +209,17 @@
 ### What is blocking me?
 
 - No major blockers at the moment.
+
+# Tuesday 18th of August
+
+### What I did today?
+
+- Worked on Client's Wireframe and UI
+
+### What am working next?
+
+- N/A
+
+### What is blocking me?
+
+- No major blockers at the moment.
