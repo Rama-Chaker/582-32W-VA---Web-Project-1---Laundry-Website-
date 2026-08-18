@@ -220,7 +220,7 @@ def init_routes(app):
             200,
         )
 
-# Get All Orders for Admin Orders Management Tab
+    # Get All Orders for Admin Orders Management Tab
     @app.route("/api/admin/orders", methods=["GET"])
     def get_admin_orders():
         all_orders = Order.query.order_by(Order.id.desc()).all()
@@ -263,8 +263,8 @@ def init_routes(app):
             orders_list.append(order_data)
 
         return jsonify(orders_list), 200
-    
-   # Get All Expenses for Admin
+
+    # Get All Expenses for Admin
     @app.route("/api/admin/expenses", methods=["GET"])
     def get_admin_expenses():
         try:
@@ -345,29 +345,30 @@ def init_routes(app):
         except Exception as e:
             print("Error updating expense:", e)
             return jsonify({"error": str(e)}), 500
-        # Get Customers Directory for Admin
+
+    # Get Customers Directory for Admin
     @app.route("/api/admin/customers", methods=["GET"])
     def get_admin_customers():
         try:
-            # Query all registered users with Client role
             clients = User.query.filter_by(role="Client").all()
             customers_list = []
 
             for client in clients:
-                # Calculate total orders and total spending for each customer
                 client_orders = Order.query.filter_by(user_id=client.id).all()
                 total_orders_count = len(client_orders)
-                
+
                 total_spent = 0.0
                 for order in client_orders:
                     if order.pricing:
-                        total_spent = total_spent + order.pricing
+                        total_spent += order.pricing
+
+                phone_val = getattr(client, "phone", None) or getattr(client, "phone_number", "N/A")
 
                 customers_list.append({
                     "id": client.id,
                     "username": client.username,
                     "email": client.email,
-                    "phone": getattr(client, "phone", "N/A") or "N/A",
+                    "phone": phone_val or "N/A",
                     "total_orders": total_orders_count,
                     "total_spent": round(total_spent, 2)
                 })
@@ -377,28 +378,81 @@ def init_routes(app):
         except Exception as e:
             print("Error fetching customers directory:", e)
             return jsonify({"error": str(e)}), 500
-        all_orders = Order.query.order_by(Order.id.desc()).all()
-        orders_list = []
 
-        for order in all_orders:
-            order_data = order.to_dict()
+    # Get Client Profile
+    @app.route("/api/client/profile/<int:user_id>", methods=["GET"])
+    def get_client_profile(user_id):
+        user = User.query.get(user_id)
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+
+        phone_val = getattr(user, "phone", None) or getattr(user, "phone_number", "")
+
+        return (
+            jsonify(
+                {
+                    "id": user.id,
+                    "username": user.username,
+                    "email": user.email,
+                    "phone": phone_val,
+                    "role": user.role
+                }
+            ),
+            200,
+        )
+
+    # Update Client Profile
+    @app.route("/api/client/profile/<int:user_id>", methods=["PUT"])
+    def update_client_profile(user_id):
+        user = User.query.get(user_id)
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+
+        data = request.get_json() or {}
+        username = data.get("username", "").strip()
+        email = data.get("email", "").strip().lower()
+        phone = data.get("phone", "").strip()
+
+        if username:
+            user.username = username
+        if email:
+            user.email = email
             
-            # Find customer name if user exists
-            if order.customer:
-                order_data["customer_name"] = order.customer.username
-            else:
-                order_data["customer_name"] = "Customer"
+        if hasattr(user, "phone"):
+            user.phone = phone
+        elif hasattr(user, "phone_number"):
+            user.phone_number = phone
 
-            # Derive service summary (e.g., Dry Cleaning, Wash, etc.)
-            if order.items and len(order.items) > 0:
-                first_item = order.items[0]
-                if len(order.items) == 1:
-                    order_data["service_summary"] = first_item.item_name
-                else:
-                    order_data["service_summary"] = first_item.item_name + f" (+{len(order.items) - 1} more)"
-            else:
-                order_data["service_summary"] = "General Wash"
+        db.session.commit()
+        return jsonify({"message": "Profile updated successfully!", "user": user.to_dict()}), 200
 
-            orders_list.append(order_data)
+    # Get Client Orders History
+    @app.route("/api/client/orders/<int:user_id>", methods=["GET"])
+    def get_client_orders(user_id):
+        user_orders = Order.query.filter_by(user_id=user_id).order_by(Order.id.desc()).all()
 
-        return jsonify(orders_list), 200
+        return jsonify([
+            {
+                "id": order.id,
+                "date": order.date,
+                "pricing": order.pricing,
+                "status": order.status
+            }
+            for order in user_orders
+        ]), 200
+
+    @app.route("/api/orders/<int:order_id>/items", methods=["GET"])
+    def get_order_items(order_id):
+        items = OrderItem.query.filter_by(order_id=order_id).all()
+
+        return jsonify([
+            {
+                "id": item.id,
+                "order_id": item.order_id,
+                "catalog_item_id": item.catalog_item_id,
+                "item_name": item.item_name,
+                "quantity": item.quantity,
+                "unit_price": item.unit_price
+            }
+            for item in items
+        ]), 200
