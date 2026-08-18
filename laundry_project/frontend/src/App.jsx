@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import Home from './Home';
 import Services from './Services';
 import AdminDashboard from './AdminDashboard';
+import ClientDashboard from './ClientDashboard';
 import About from './About';
 import Auth from './Auth';
 import Pricing from './Pricing';
 
 export default function App() {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(() => {
+    // Optional: Keep session on page refresh
+    const savedUser = localStorage.getItem("violetta_user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
   const [currentPage, setCurrentPage] = useState('home');
 
   // Function to navigate between pages
@@ -18,35 +23,38 @@ export default function App() {
     window.scrollTo(0, 0);
   }
 
-  function handleLogout() {
-    setCurrentUser(null);
-    setCurrentPage('home');
-  }
+  const handleLoginSuccess = (userData) => {
+    setCurrentUser(userData);
+    localStorage.setItem("violetta_user", JSON.stringify(userData));
 
-  // Handle successful login
-  function handleLoginSuccess(user) {
-    setCurrentUser(user);
-    
-    // If the logged in user is an admin, go directly to admin dashboard!
-    if (user && user.role === 'admin') {
+    // Redirect admins to admin dashboard and clients to client dashboard
+    const userRole = userData?.role?.toLowerCase();
+    if (userRole === 'admin') {
       handleNavigate('admin');
     } else {
-      handleNavigate('home');
+      handleNavigate('client-dashboard');
     }
-  }
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem("violetta_user");
+    handleNavigate('home');
+  };
 
   return (
     <div className="app-container">
       {/* 1. HOME VIEW */}
       {currentPage === 'home' && (
         <Home 
-         currentUser={currentUser}
+          currentUser={currentUser}
           onLogout={handleLogout}
           onNavigateToServices={() => setCurrentPage('services')}
           onNavigateToAbout={() => setCurrentPage('about')}
-          onNavigateToPricing={()=> setCurrentPage('pricing')}
+          onNavigateToPricing={() => setCurrentPage('pricing')}
           onNavigateToAuth={() => setCurrentPage('auth')}
           onNavigateToAdmin={() => setCurrentPage('admin')} 
+          onNavigateToDashboard={() => handleNavigate('client-dashboard')}
         />
       )}
 
@@ -56,13 +64,13 @@ export default function App() {
           onNavigateHome={() => handleNavigate('home')}
           onNavigateToAuth={() => handleNavigate('auth')}
           onNavigateToAbout={() => handleNavigate('about')}
-          onNavigateToPricing={()=> handleNavigate('pricing')}
+          onNavigateToPricing={() => handleNavigate('pricing')}
           currentUser={currentUser}
           onLogout={handleLogout}
         />
       )}
 
-      {/* 3. AUTH (SIGN IN / REGISTER) VIEW - THIS WAS MISSING */}
+      {/* 3. AUTH (SIGN IN / REGISTER) VIEW */}
       {currentPage === 'auth' && (
         <Auth 
           onNavigateHome={() => handleNavigate('home')}
@@ -70,7 +78,16 @@ export default function App() {
         />
       )}
 
-      {/* 4. ADMIN DASHBOARD VIEW */}
+      {/* 4. CLIENT DASHBOARD VIEW */}
+      {currentPage === 'client-dashboard' && (
+        <ClientDashboard 
+          currentUser={currentUser}
+          onLogout={handleLogout}
+          onNavigateHome={() => handleNavigate('home')}
+        />
+      )}
+
+      {/* 5. ADMIN DASHBOARD VIEW */}
       {currentPage === 'admin' && (
         <AdminDashboard 
           currentUser={currentUser}
@@ -79,7 +96,7 @@ export default function App() {
         />
       )}
 
-      {/* 5. ABOUT VIEW */}
+      {/* 6. ABOUT VIEW */}
       {currentPage === 'about' && (
         <About 
           currentUser={currentUser}
@@ -88,22 +105,22 @@ export default function App() {
           onNavigateToAdmin={() => handleNavigate('admin')}
           onNavigateHome={() => handleNavigate('home')}
           onNavigateToServices={() => handleNavigate('services')}
-          onNavigateToPricing={()=> handleNavigate('pricing')}
+          onNavigateToPricing={() => handleNavigate('pricing')}
         />
       )}
 
-      {/*6. Pricing View */}
+      {/* 7. PRICING VIEW */}
       {currentPage === 'pricing' && (
-  <Pricing 
-    currentUser={currentUser}
-    onLogout={handleLogout}
-    onNavigateToHome={() => handleNavigate('home')}
-    onNavigateToServices={() => handleNavigate('services')}
-    onNavigateToAbout={() => handleNavigate('about')}
-    onNavigateToAuth={() => handleNavigate('auth')}
-    onNavigateToAdmin={() => handleNavigate('admin')} 
-  />
-)}
+        <Pricing 
+          currentUser={currentUser}
+          onLogout={handleLogout}
+          onNavigateHome={() => handleNavigate('home')}
+          onNavigateToServices={() => handleNavigate('services')}
+          onNavigateToAbout={() => handleNavigate('about')}
+          onNavigateToAuth={() => handleNavigate('auth')}
+          onNavigateToAdmin={() => handleNavigate('admin')} 
+        />
+      )}
     </div>
   );
 }
