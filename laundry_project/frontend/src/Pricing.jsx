@@ -20,7 +20,7 @@ import {
 
 export default function Pricing({
     currentUser,
-    onNavigateToHome,
+    onNavigateHome,
     onNavigateToServices,
     onNavigateToAbout,
     onNavigateToAuth,
@@ -62,7 +62,7 @@ export default function Pricing({
             {/* --- HEADER NAVBAR --- */}
             <header className="pricing-navbar">
                 <div className="navbar-container">
-                    <div className="logo-area" onClick={onNavigateToHome}>
+                    <div className="logo-area" onClick={onNavigateHome}>
                         <img
                             src={logoImg}
                             alt="Violetta Laundry Logo"
@@ -75,7 +75,7 @@ export default function Pricing({
                             href="#home"
                             onClick={(e) => {
                                 e.preventDefault();
-                                onNavigateToHome();
+                                onNavigateHome();
                             }}
                         >
                             Home
@@ -380,7 +380,7 @@ export default function Pricing({
                         <h3>Quick Links</h3>
                         <ul>
                             <li>
-                                <a href="#home" onClick={onNavigateToHome}>
+                                <a href="#home" onClick={onNavigateHome}>
                                     1. Home
                                 </a>
                             </li>
